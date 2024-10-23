@@ -118,6 +118,7 @@ def depthFirstSearch(problem: SearchProblem, current_state=None, first = True) -
         del dfs_path[-1]
 
 
+
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
