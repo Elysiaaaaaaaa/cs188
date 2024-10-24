@@ -122,12 +122,53 @@ def depthFirstSearch(problem: SearchProblem, current_state=None, first = True) -
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from util import Queue
+    q = Queue()
+    start = problem.getStartState()
+    q.push([start])
+    fridge = set()
+    fridge.add(start)
+    while not q.isEmpty():
+        search_paths = q.pop()
+        last_node = search_paths[-1]
+        last_action = search_paths[:-1]
+        if problem.isGoalState(last_node):
+            return last_action
+        successors = problem.getSuccessors(last_node)
+        for successor in successors:
+            successor, action, stepCost = successor
+            if successor in fridge:
+                continue
+            new_path = last_action+[action,successor]
+            fridge.add(successor)
+            q.push(new_path)
+
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from util import PriorityQueue
+    start = problem.getStartState()
+    pq = PriorityQueue()
+    pq.push([[],start,0],-0)
+    fridge = set()
+    while not pq.isEmpty():
+        search_paths = pq.pop()
+        last_node = search_paths[1]
+        last_cost = search_paths[2]
+        last_action = search_paths[0]
+        if last_node in fridge:
+            continue
+        else:
+            fridge.add(last_node)
+        if problem.isGoalState(last_node):
+            return last_action
+        successors = problem.getSuccessors(last_node)
+        for successor in successors:
+            successor, action, stepCost = successor
+            new_path = last_action + [action]
+            new_cost = stepCost+last_cost
+            pq.update([new_path,successor,new_cost],new_cost)
 
 def nullHeuristic(state, problem=None) -> float:
     """
